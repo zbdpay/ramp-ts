@@ -2,6 +2,25 @@
 
 Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitcoin Lightning Network payments in web applications.
 
+## TL;DR - Quick Start
+
+**Try the interactive example:**
+
+1. **Start local server (to avoid CORS errors when run html file):**
+   ```bash
+   cd ramp-ts && python3 -m http.server 8000
+   ```
+
+2. **Open in browser:** 
+   `http://localhost:8000/example/js.html`
+
+3. **Fill the form:**
+   - Enter your ZBD API Key
+   - Fill email and Lightning destination 
+   - Click "Create Session & Load Ramp"
+
+4. **Done!** The widget loads automatically with your session.
+
 ## Features
 
 - ✅ **TypeScript First**: Full type safety with comprehensive TypeScript definitions
@@ -12,12 +31,23 @@ Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitco
 
 ## Installation
 
+### Via npm/yarn (recommended)
+
 ```bash
 npm install @zbdpay/ramp-ts
 # or
 yarn add @zbdpay/ramp-ts
 # or
 pnpm add @zbdpay/ramp-ts
+```
+
+### Via CDN (no build step)
+
+```html
+<script type="module">
+  import { createRamp } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts/dist/src/index.js';
+  // use createRamp
+</script>
 ```
 
 ## Quick Start
@@ -51,7 +81,7 @@ interface RampOptions {
   environment?: EnvironmentEnum;             // Default: EnvironmentEnum.Production
   container?: HTMLElement | string;          // Container element or selector
   width?: string | number;                   // Default: '100%'
-  height?: string | number;                  // Default: '600px'
+  height?: string | number;                  // Default: '100%'
   // Callbacks
   onSuccess?: (data: any) => void;           // Payment successful
   onError?: (error: RampError) => void;      // Error occurred
@@ -133,6 +163,8 @@ const ramp = createRamp({
 // - border-radius: 8px
 // - allow: payment
 // - allowtransparency: true
+// - width: 100% (default)
+// - height: 100% (default)
 ```
 
 ### Programmatic Control
@@ -197,6 +229,58 @@ This is the core package. For framework-specific integrations, see:
 - **React**: [`@zbdpay/ramp-react`](https://www.npmjs.com/package/@zbdpay/ramp-react)
 - **React Native**: [`@zbdpay/ramp-react-native`](https://www.npmjs.com/package/@zbdpay/ramp-react-native)
 - **Flutter**: [`zbd_ramp_flutter`](https://pub.dev/packages/zbd_ramp_flutter)
+
+## Examples
+
+### Simple Iframe (No JavaScript Required)
+
+The simplest way to integrate ZBD Ramp is with a basic iframe:
+
+```html
+<iframe 
+    src="https://ramp.zbdpay.com?session_token=YOUR_SESSION_TOKEN"
+    width="100%" 
+    height="600px"
+    allow="payment"
+    style="border: none; border-radius: 8px;">
+</iframe>
+```
+
+**Environment URLs:**
+- Production: `https://ramp.zbdpay.com`
+- X1 Sandbox: `https://ramp.x1.zbdpay.com`
+- X2 Sandbox: `https://ramp.x2.zbdpay.com` 
+- Voltorb Sandbox: `https://ramp.voltorb.zbdpay.com`
+
+### JavaScript Library Example
+
+For advanced features like event handling and programmatic control, use the JavaScript library. A complete example is available in the `example/` directory.
+
+### Running the Example Locally
+
+1. **Navigate to the ramp-ts directory:**
+   ```bash
+   cd ramp-ts
+   ```
+
+2. **Start a local HTTP server:**
+   ```bash
+   # Using Python (recommended)
+   python3 -m http.server 8000
+   
+   # Or using Node.js
+   npx http-server . -p 8000 -o
+   
+   # Or using PHP
+   php -S localhost:8000
+   ```
+
+3. **Open the example:**
+   Navigate to `http://localhost:8000/example/`
+
+4. **Use with session token:**
+   - Enter your session token in the input field, or
+   - Pass it as a URL parameter: `http://localhost:8000/example/?session_token=your_token`
 
 ## License
 

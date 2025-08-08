@@ -1,5 +1,5 @@
-import { EnvironmentEnum, PostMessageData, RampError, RampInstance, RampLog, RampOptions } from './types';
-import { buildWidgetUrl, createIframe, getContainer, getWidgetUrl } from './utils';
+import { EnvironmentEnum, PostMessageData, RampError, RampInstance, RampLog, RampOptions } from './types.js';
+import { buildWidgetUrl, createIframe, getContainer, getWidgetUrl } from './utils.js';
 
 export class ZBDRamp implements RampInstance {
   private iframe: HTMLIFrameElement | null = null;
@@ -129,17 +129,6 @@ export class ZBDRamp implements RampInstance {
       window.removeEventListener('message', this.messageListener);
       this.messageListener = null;
     }
-  }
-
-  public sendMessage(message: PostMessageData): void {
-    if (!this.iframe || !this.iframe.contentWindow) {
-      console.warn('Cannot send message: iframe not available');
-      return;
-    }
-
-    const targetOrigin = getWidgetUrl(this.options.environment || EnvironmentEnum.Production);
-
-    this.iframe.contentWindow.postMessage(message, targetOrigin);
   }
 
   public destroy(): void {

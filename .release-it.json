@@ -1,0 +1,26 @@
+{
+  "disableMetrics": true,
+  "hooks": {
+    "before:init": [
+      "npm run ts:check",
+      "npm run lint",
+      "npm run build"
+    ]
+  },
+  "git": {
+    "requireCleanWorkingDir": false,
+    "requireUpstream": false,
+    "requireCommits": false,
+    "commit": false,
+    "tag": false,
+    "push": false
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "@release-it/keep-a-changelog": {
+      "filename": "CHANGELOG.md"
+    }
+  }
+}

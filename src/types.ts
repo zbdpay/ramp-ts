@@ -45,6 +45,5 @@ export interface PostMessageData {
 export interface RampInstance {
   mount: (container?: HTMLElement | string) => void;
   unmount: () => void;
-  sendMessage: (message: PostMessageData) => void;
   destroy: () => void;
 }

@@ -81,7 +81,7 @@ export default [
         'error',
         'ignorePackages',
         {
-          js: 'never',
+          js: 'always',
           jsx: 'never',
           ts: 'never',
           tsx: 'never'
@@ -93,11 +93,12 @@ export default [
         version: 'detect'
       },
       'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json'
+        },
         node: {
           extensions: ['.js', '.jsx', '.ts', '.tsx']
-        },
-        typescript: {
-          alwaysTryTypes: true
         }
       }
     }

@@ -1,5 +1,5 @@
-export { ZBDRamp, createRamp } from './ramp';
-export * from './types';
-export * from './utils';
+export { ZBDRamp, createRamp } from './ramp.js';
+export * from './types.js';
+export * from './utils.js';
 
-export { createRamp as default } from './ramp';
+export { createRamp as default } from './ramp.js';
