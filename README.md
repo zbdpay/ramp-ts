@@ -26,8 +26,7 @@ Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitco
 - ✅ **TypeScript First**: Full type safety with comprehensive TypeScript definitions
 - ✅ **Environment Support**: Production and sandbox environments (X1, X2, Voltorb)
 - ✅ **PostMessage Communication**: Real-time error handling, logging, and step tracking
-- ✅ **Customizable**: Iframe dimensions and PostMessage communication
-- ✅ **Lightweight**: Minimal dependencies, tree-shakeable
+- ✅ **Lightweight**: No dependencies, tree-shakeable
 
 ## Installation
 
