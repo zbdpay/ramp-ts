@@ -8,7 +8,7 @@ Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitco
 
 1. **Start local server (to avoid CORS errors when run html file):**
    ```bash
-   cd ramp-ts && python3 -m http.server 8000
+   cd ramp-ts && npx http-server . -p 8000 -o
    ```
 
 2. **Open in browser:** 
@@ -265,14 +265,7 @@ For advanced features like event handling and programmatic control, use the Java
 
 2. **Start a local HTTP server:**
    ```bash
-   # Using Python (recommended)
-   python3 -m http.server 8000
-   
-   # Or using Node.js
    npx http-server . -p 8000 -o
-   
-   # Or using PHP
-   php -S localhost:8000
    ```
 
 3. **Open the example:**
