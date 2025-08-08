@@ -1,6 +1,6 @@
 # @zbdpay/ramp-ts
 
-Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitcoin purchase interface web applications.
+Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitcoin purchase interface for web applications.
 
 ## TL;DR - Quick Start
 
