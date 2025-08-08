@@ -97,19 +97,9 @@ interface RampOptions {
 interface RampInstance {
   mount: (container?: HTMLElement | string) => void;
   unmount: () => void;
-  sendMessage: (message: PostMessageData) => void;
   destroy: () => void;
 }
 ```
-
-## Environment URLs
-
-The package automatically resolves the correct URLs based on your environment configuration:
-
-- **EnvironmentEnum.Production**: `https://ramp.zbdpay.com`
-- **EnvironmentEnum.X1**: `https://ramp.x1.zbdpay.com`
-- **EnvironmentEnum.X2**: `https://ramp.x2.zbdpay.com`
-- **EnvironmentEnum.Voltorb**: `https://ramp.voltorb.zbdpay.com`
 
 ## Examples
 
@@ -164,6 +154,7 @@ const ramp = createRamp({
 // - allowtransparency: true
 // - width: 100% (default)
 // - height: 100% (default)
+// - min-height: 600px (default)
 ```
 
 ### Programmatic Control
@@ -175,12 +166,6 @@ const ramp = createRamp({
 
 // Mount to container
 ramp.mount('#my-container');
-
-// Send custom message to iframe
-ramp.sendMessage({
-  type: 'CUSTOM_EVENT',
-  payload: { data: 'value' },
-});
 
 // Unmount iframe (keeps instance)
 ramp.unmount();
@@ -244,12 +229,6 @@ The simplest way to integrate ZBD Ramp is with a basic iframe:
     style="border: none; border-radius: 8px;">
 </iframe>
 ```
-
-**Environment URLs:**
-- Production: `https://ramp.zbdpay.com`
-- X1 Sandbox: `https://ramp.x1.zbdpay.com`
-- X2 Sandbox: `https://ramp.x2.zbdpay.com` 
-- Voltorb Sandbox: `https://ramp.voltorb.zbdpay.com`
 
 ### JavaScript Library Example
 
