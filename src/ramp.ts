@@ -1,4 +1,11 @@
-import { EnvironmentEnum, PostMessageData, RampError, RampInstance, RampLog, RampOptions, WidgetPostMessageEnum } from './types.js';
+import {
+  EnvironmentEnum,
+  PostMessageData,
+  RampError,
+  RampInstance,
+  RampOptions,
+  WidgetPostMessageEnum,
+} from './types.js';
 import { buildWidgetUrl, createIframe, getContainer, getWidgetUrl } from './utils.js';
 
 export class ZBDRamp implements RampInstance {
