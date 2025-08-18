@@ -1,4 +1,4 @@
-import { EnvironmentEnum, PostMessageData, RampError, RampInstance, RampLog, RampOptions } from './types.js';
+import { EnvironmentEnum, PostMessageData, RampError, RampInstance, RampLog, RampOptions, WidgetPostMessageEnum } from './types.js';
 import { buildWidgetUrl, createIframe, getContainer, getWidgetUrl } from './utils.js';
 
 export class ZBDRamp implements RampInstance {
@@ -53,11 +53,11 @@ export class ZBDRamp implements RampInstance {
     const { type, payload } = data;
 
     switch (type) {
-      case 'WIDGET_SUCCESS':
+      case WidgetPostMessageEnum.TransactionComplete:
         this.options.onSuccess?.(payload);
         break;
 
-      case 'WIDGET_ERROR':
+      case WidgetPostMessageEnum.Error:
         const error: RampError = {
           code: payload?.code || 'UNKNOWN_ERROR',
           message: payload?.message || 'An error occurred',
@@ -66,25 +66,20 @@ export class ZBDRamp implements RampInstance {
         this.options.onError?.(error);
         break;
 
-      case 'WIDGET_STEP_CHANGE':
+      case WidgetPostMessageEnum.StepChange:
         this.options.onStepChange?.(payload?.step);
         break;
 
-      case 'WIDGET_LOG':
-        const log: RampLog = {
-          level: payload?.level || 'info',
-          message: payload?.message || '',
-          data: payload?.data,
-        };
-        this.options.onLog?.(log);
-        break;
-
-      case 'WIDGET_READY':
+      case WidgetPostMessageEnum.Ready:
         this.options.onReady?.();
         break;
 
-      case 'WIDGET_CLOSE':
-        this.options.onClose?.();
+      case WidgetPostMessageEnum.KYCStatusChange:
+        this.options.onLog?.({
+          level: 'info',
+          message: 'KYC Status Change',
+          data: payload,
+        });
         break;
 
       default:

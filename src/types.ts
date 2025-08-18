@@ -5,6 +5,14 @@ export enum EnvironmentEnum {
   Voltorb = 'voltorb',
 }
 
+export enum WidgetPostMessageEnum {
+  StepChange = 'WIDGET_STEP_CHANGE',
+  Error = 'WIDGET_ERROR',
+  Ready = 'WIDGET_READY',
+  KYCStatusChange = 'WIDGET_KYC_STATUS_CHANGE',
+  TransactionComplete = 'WIDGET_TRANSACTION_COMPLETE',
+}
+
 export interface RampConfig {
   sessionToken: string;
   environment?: EnvironmentEnum;
@@ -16,7 +24,6 @@ export interface RampCallbacks {
   onStepChange?: (step: string) => void;
   onLog?: (log: RampLog) => void;
   onReady?: () => void;
-  onClose?: () => void;
 }
 
 export interface RampError {
@@ -38,7 +45,7 @@ export interface RampOptions extends RampConfig, RampCallbacks {
 }
 
 export interface PostMessageData {
-  type: string;
+  type: WidgetPostMessageEnum;
   payload?: any;
 }
 
