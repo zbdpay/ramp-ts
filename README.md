@@ -51,11 +51,32 @@ pnpm add @zbdpay/ramp-ts
 
 ## Quick Start
 
+### 1. Create Session Token
+
+First, create a session token using the ZBD API:
+
+```typescript
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+const response = await initRampSession({
+  apikey: 'your-zbd-api-key',
+  email: 'user@example.com',
+  destination: 'lightning-address-or-username',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+  webhook_url: 'https://your-webhook-url.com',
+});
+
+const sessionToken = response.data.session_token;
+```
+
+### 2. Create and Mount Ramp Widget
+
 ```typescript
 import { createRamp, EnvironmentEnum } from '@zbdpay/ramp-ts';
 
 const ramp = createRamp({
-  sessionToken: 'your-session-token',
+  sessionToken,
   environment: EnvironmentEnum.Production, // or EnvironmentEnum.X1, EnvironmentEnum.X2, EnvironmentEnum.Voltorb
   container: '#ramp-container',
   onSuccess: (data) => console.log('Success:', data),
@@ -67,6 +88,69 @@ ramp.mount();
 ```
 
 ## API Reference
+
+### initRampSession(config)
+
+Creates a new session token for the ZBD Ramp widget.
+
+#### Parameters
+
+```typescript
+interface InitRampSessionConfig {
+  apikey: string;                            // Required: Your ZBD API key
+  email: string;                             // Required: User's email address
+  destination: string;                       // Required: Lightning address or username
+  quote_currency: QuoteCurrencyEnum;         // Required: Quote currency (USD)
+  base_currency: BaseCurrencyEnum;           // Required: Base currency (BTC)
+  webhook_url?: string;                      // Optional: Webhook URL for notifications
+  reference_id?: string;                     // Optional: Your reference ID
+  metadata?: Record<string, any>;            // Optional: Additional metadata
+  environment?: EnvironmentEnum;             // Optional: Default is Production
+}
+```
+
+#### Returns
+
+```typescript
+interface InitRampSessionResponse {
+  data: {
+    session_token: string;                   // Session token for widget
+    expires_at: string;                      // Token expiration time
+    widget_url: string;                      // Direct widget URL
+  };
+  error: string | null;                      // Error message if failed
+  success: boolean;                          // Success status
+  message: string;                           // Response message
+}
+```
+
+#### Example
+
+```typescript
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+try {
+  const response = await initRampSession({
+    apikey: 'your-zbd-api-key',
+    email: 'user@example.com',
+    destination: 'lightning-address',
+    quote_currency: QuoteCurrencyEnum.USD,
+    base_currency: BaseCurrencyEnum.BTC,
+    webhook_url: 'https://your-webhook.com',
+    reference_id: 'order-123',
+    metadata: { userId: '456', plan: 'premium' },
+  });
+
+  if (response.success) {
+    const sessionToken = response.data.session_token;
+    // Use sessionToken with createRamp
+  } else {
+    console.error('Failed to create session:', response.error);
+  }
+} catch (error) {
+  console.error('Session creation error:', error);
+}
+```
 
 ### createRamp(options)
 
@@ -203,6 +287,11 @@ import type {
   RampInstance,
   EnvironmentEnum,
   PostMessageData,
+  InitRampSessionConfig,
+  InitRampSessionData,
+  InitRampSessionResponse,
+  QuoteCurrencyEnum,
+  BaseCurrencyEnum,
 } from '@zbdpay/ramp-ts';
 ```
 

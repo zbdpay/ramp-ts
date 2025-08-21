@@ -5,6 +5,14 @@ export enum EnvironmentEnum {
   Voltorb = 'voltorb',
 }
 
+export enum QuoteCurrencyEnum {
+  USD = 'USD',
+}
+
+export enum BaseCurrencyEnum {
+  BTC = 'BTC',
+}
+
 export enum WidgetPostMessageEnum {
   StepChange = 'WIDGET_STEP_CHANGE',
   Error = 'WIDGET_ERROR',
@@ -16,6 +24,7 @@ export enum WidgetPostMessageEnum {
 export interface RampConfig {
   sessionToken: string;
   environment?: EnvironmentEnum;
+  secret?: string;
 }
 
 export interface RampCallbacks {
@@ -53,4 +62,29 @@ export interface RampInstance {
   mount: (container?: HTMLElement | string) => void;
   unmount: () => void;
   destroy: () => void;
+}
+
+export interface InitRampSessionConfig {
+  apikey: string;
+  email: string;
+  destination: string;
+  quote_currency: QuoteCurrencyEnum;
+  base_currency: BaseCurrencyEnum;
+  webhook_url?: string;
+  reference_id?: string;
+  metadata?: Record<string, any>;
+  environment?: EnvironmentEnum;
+}
+
+export interface InitRampSessionData {
+  session_token: string;
+  expires_at: string;
+  widget_url: string;
+}
+
+export interface InitRampSessionResponse {
+  data: InitRampSessionData;
+  error: string | null;
+  success: boolean;
+  message: string;
 }

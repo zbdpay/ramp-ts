@@ -1,6 +1,6 @@
 {
   "name": "@zbdpay/ramp-ts",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "description": "Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget",
   "main": "dist/src/index.js",

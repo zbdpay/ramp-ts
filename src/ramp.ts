@@ -108,6 +108,7 @@ export class ZBDRamp implements RampInstance {
     const widgetUrl = buildWidgetUrl({
       baseUrl,
       sessionToken: this.options.sessionToken,
+      secret: this.options.secret,
     });
 
     this.iframe = createIframe({

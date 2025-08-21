@@ -47,9 +47,21 @@ export const getContainer = (container?: HTMLElement | string): HTMLElement => {
   return container;
 };
 
-export const buildWidgetUrl = ({ baseUrl, sessionToken }: { baseUrl: string; sessionToken: string }): string => {
+export const buildWidgetUrl = ({
+  baseUrl,
+  sessionToken,
+  secret,
+}: {
+  baseUrl: string;
+  sessionToken: string;
+  secret?: string;
+}): string => {
   const url = new URL(baseUrl);
   url.searchParams.set('session_token', sessionToken);
+
+  if (secret) {
+    url.searchParams.set('secret', secret);
+  }
 
   return url.toString();
 };

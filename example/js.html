@@ -201,7 +201,7 @@
     -->
 
     <script type="module">
-      import { createRamp } from '../dist/src/index.js';
+      import { createRamp, initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum, EnvironmentEnum } from '../dist/src/index.js';
 
       let currentRamp = null;
 
@@ -233,52 +233,27 @@
         createButton.textContent = 'Creating...';
 
         try {
-          const apiUrl =
-            environment === 'production'
-              ? 'https://api.zbdpay.com/v1/ramp-widget'
-              : `https://${environment}.zbdpay.com/api/v1/ramp-widget`;
-
-          const requestBody = {
+          const response = await initRampSession({
+            apikey: apiKey,
             email,
+            destination,
             quote_currency: quoteCurrency,
             base_currency: baseCurrency,
-            destination,
             webhook_url: webhookUrl,
-            ...(referenceId && { reference_id: referenceId }),
+            reference_id: referenceId || undefined,
             metadata: {
               created_from: 'ramp-ts-example',
               environment,
             },
-          };
-
-          console.log('Creating session with:', requestBody);
-
-          const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-              apikey: apiKey,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
+            environment,
           });
 
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`API Error ${response.status}: ${errorText}`);
-          }
+          console.log('Session created:', response);
 
-          const data = await response.json();
-          console.log('Session created:', data);
-
-          const sessionToken = data.data.session_token;
-
-          if (sessionToken) {
-            loadRampWithToken(sessionToken, environment);
+          if (response.success && response.data.session_token) {
+            loadRampWithToken(response.data.session_token, environment);
           } else {
-            console.error('Full API response:', data);
-            throw new Error(
-              `No session token found in API response. Available fields: ${Object.keys(data).join(', ')}`
-            );
+            throw new Error(response.error || 'No session token found in API response');
           }
         } catch (error) {
           console.error('Error creating session:', error);
