@@ -5,7 +5,7 @@ const getBaseUrl = (environment: EnvironmentEnum): string => {
     return 'https://api.zbdpay.com';
   }
 
-  return `https://api.${environment}.zbdpay.com`;
+  return `https://${environment}.zbdpay.com`;
 };
 
 export const initRampSession = async ({

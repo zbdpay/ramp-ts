@@ -192,16 +192,8 @@
       </div>
     </div>
 
-    <!-- For production use with CDN (once published to npm): -->
-    <!-- 
     <script type="module">
-      import { createRamp } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts/dist/src/index.js';
-      // use createRamp
-    </script>
-    -->
-
-    <script type="module">
-      import { createRamp, initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum, EnvironmentEnum } from '../dist/src/index.js';
+      import { createRamp, initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum, EnvironmentEnum } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts/dist/src/index.js';
 
       let currentRamp = null;
 
