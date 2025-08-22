@@ -40,7 +40,7 @@ export const initRampSession = async ({
     body.metadata = metadata;
   }
 
-  const response = await fetch(`${baseUrl}/v1/ramp-widget`, {
+  const response = await fetch(`${baseUrl}/api/v1/ramp-widget`, {
     method: 'POST',
     headers: {
       apikey: apikey,

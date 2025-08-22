@@ -137,15 +137,6 @@
               <input type="text" id="apiKey" placeholder="Enter your ZBD API Key" />
             </div>
             <div>
-              <label for="apiEnvironment">Environment</label>
-              <select id="apiEnvironment">
-                <option value="production">Production</option>
-                <option value="x1">X1 (Sandbox)</option>
-                <option value="x2">X2 (Sandbox)</option>
-                <option value="voltorb">Voltorb (Sandbox)</option>
-              </select>
-            </div>
-            <div>
               <label for="email">Email</label>
               <input type="email" id="email" placeholder="user@example.com" />
             </div>
@@ -193,7 +184,7 @@
     </div>
 
     <script type="module">
-      import { createRamp, initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum, EnvironmentEnum } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts/dist/src/index.js';
+      import { createRamp, initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts@latest/dist/src/index.js';
 
       let currentRamp = null;
 
@@ -207,7 +198,6 @@
       // Create session token via API
       const createSessionToken = async () => {
         const apiKey = document.getElementById('apiKey').value.trim();
-        const environment = document.getElementById('apiEnvironment').value;
         const email = document.getElementById('email').value.trim();
         const destination = document.getElementById('destination').value.trim();
         const quoteCurrency = document.getElementById('quoteCurrency').value;
@@ -235,15 +225,13 @@
             reference_id: referenceId || undefined,
             metadata: {
               created_from: 'ramp-ts-example',
-              environment,
             },
-            environment,
           });
 
           console.log('Session created:', response);
 
           if (response.success && response.data.session_token) {
-            loadRampWithToken(response.data.session_token, environment);
+            loadRampWithToken(response.data.session_token);
           } else {
             throw new Error(response.error || 'No session token found in API response');
           }
@@ -256,10 +244,9 @@
         }
       };
 
-      const loadRampWithToken = (sessionToken, environment) => {
+      const loadRampWithToken = (sessionToken) => {
         const config = {
           sessionToken,
-          environment,
           onReady: () => console.log('Widget ready'),
           onSuccess: (data) => {
             console.log('Payment Success:', data);
@@ -278,7 +265,7 @@
           onLog: (logData) => console.log('Log:', logData),
         };
 
-        console.log('Loading ZBD Ramp:', { sessionToken: sessionToken.substring(0, 8) + '...', environment });
+        console.log('Loading ZBD Ramp:', { sessionToken: sessionToken.substring(0, 8) + '...' });
 
         try {
           currentRamp = createRamp(config);

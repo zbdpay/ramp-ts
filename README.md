@@ -8,23 +8,19 @@ Core TypeScript/JavaScript iframe wrapper for ZBD Ramp widget that enables Bitco
 
 1. **Start local server (to avoid CORS errors when run html file):**
    ```bash
-   cd ramp-ts && npx http-server . -p 8000 -o
+   npx http-server . -p 8000 -o /example/js.html
    ```
 
-2. **Open in browser:** 
-   `http://localhost:8000/example/js.html`
-
-3. **Fill the form:**
+2. **Fill the form:**
    - Enter your ZBD API Key
    - Fill email and Lightning destination 
    - Click "Create Session & Load Ramp"
 
-4. **Done!** The widget loads automatically with your session.
+3. **Done!** The widget loads automatically with your session.
 
 ## Features
 
 - ✅ **TypeScript First**: Full type safety with comprehensive TypeScript definitions
-- ✅ **Environment Support**: Production and sandbox environments (X1, X2, Voltorb)
 - ✅ **PostMessage Communication**: Real-time error handling, logging, and step tracking
 - ✅ **Lightweight**: No dependencies, tree-shakeable
 
@@ -45,7 +41,6 @@ pnpm add @zbdpay/ramp-ts
 ```html
 <script type="module">
   import { createRamp } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts/dist/src/index.js';
-  // use createRamp
 </script>
 ```
 
@@ -73,11 +68,10 @@ const sessionToken = response.data.session_token;
 ### 2. Create and Mount Ramp Widget
 
 ```typescript
-import { createRamp, EnvironmentEnum } from '@zbdpay/ramp-ts';
+import { createRamp } from '@zbdpay/ramp-ts';
 
 const ramp = createRamp({
   sessionToken,
-  environment: EnvironmentEnum.Production, // or EnvironmentEnum.X1, EnvironmentEnum.X2, EnvironmentEnum.Voltorb
   container: '#ramp-container',
   onSuccess: (data) => console.log('Success:', data),
   onError: (error) => console.error('Error:', error),
@@ -105,7 +99,6 @@ interface InitRampSessionConfig {
   webhook_url?: string;                      // Optional: Webhook URL for notifications
   reference_id?: string;                     // Optional: Your reference ID
   metadata?: Record<string, any>;            // Optional: Additional metadata
-  environment?: EnvironmentEnum;             // Optional: Default is Production
 }
 ```
 
@@ -161,7 +154,6 @@ Creates a new ZBD Ramp instance.
 ```typescript
 interface RampOptions {
   sessionToken: string;                      // Required: Your session token
-  environment?: EnvironmentEnum;             // Default: EnvironmentEnum.Production
   container?: HTMLElement | string;          // Container element or selector
   width?: string | number;                   // Default: '100%'
   height?: string | number;                  // Default: '100%'
@@ -190,11 +182,10 @@ interface RampInstance {
 ### Basic Usage
 
 ```typescript
-import { createRamp, EnvironmentEnum } from '@zbdpay/ramp-ts';
+import { createRamp } from '@zbdpay/ramp-ts';
 
 const ramp = createRamp({
   sessionToken: 'your-session-token',
-  environment: EnvironmentEnum.Production,
   container: document.getElementById('ramp-container'),
 });
 
@@ -206,7 +197,6 @@ ramp.mount();
 ```typescript
 const ramp = createRamp({
   sessionToken: 'your-session-token',
-  environment: EnvironmentEnum.X1,
   onSuccess: (data) => {
     console.log('Payment successful:', data);
     // Handle successful payment
@@ -285,7 +275,6 @@ import type {
   RampError,
   RampLog,
   RampInstance,
-  EnvironmentEnum,
   PostMessageData,
   InitRampSessionConfig,
   InitRampSessionData,
