@@ -101,9 +101,6 @@
         border-radius: 4px;
         cursor: pointer;
       }
-      button:hover {
-        background: #0056b3;
-      }
       button:disabled {
         background: #ccc;
         cursor: not-allowed;
@@ -137,8 +134,19 @@
               <input type="text" id="apiKey" placeholder="Enter your ZBD API Key" />
             </div>
             <div>
+              <label for="authMethod">Authentication Method</label>
+              <select id="authMethod">
+                <option value="email">Email</option>
+                <option value="access_token">Access Token</option>
+              </select>
+            </div>
+            <div id="emailField">
               <label for="email">Email</label>
               <input type="email" id="email" placeholder="user@example.com" />
+            </div>
+            <div id="accessTokenField" style="display: none;">
+              <label for="accessToken">Access Token</label>
+              <input type="text" id="accessToken" placeholder="Enter access token" />
             </div>
             <div>
               <label for="destination">Destination</label>
@@ -195,18 +203,44 @@
         document.getElementById('sessionToken').value = sessionTokenFromUrl;
       }
 
+      const toggleAuthMethod = () => {
+        const authMethod = document.getElementById('authMethod').value;
+        const emailField = document.getElementById('emailField');
+        const accessTokenField = document.getElementById('accessTokenField');
+        
+        if (authMethod === 'email') {
+          emailField.style.display = 'block';
+          accessTokenField.style.display = 'none';
+        } else {
+          emailField.style.display = 'none';
+          accessTokenField.style.display = 'block';
+        }
+      };
+
       // Create session token via API
       const createSessionToken = async () => {
         const apiKey = document.getElementById('apiKey').value.trim();
+        const authMethod = document.getElementById('authMethod').value;
         const email = document.getElementById('email').value.trim();
+        const accessToken = document.getElementById('accessToken').value.trim();
         const destination = document.getElementById('destination').value.trim();
         const quoteCurrency = document.getElementById('quoteCurrency').value;
         const baseCurrency = document.getElementById('baseCurrency').value;
         const webhookUrl = document.getElementById('webhookUrl').value.trim();
         const referenceId = document.getElementById('referenceId').value.trim();
 
-        if (!apiKey || !email || !destination) {
-          alert('Please fill in API Key, Email, and Destination fields');
+        if (!apiKey || !destination) {
+          alert('Please fill in API Key and Destination fields');
+          return;
+        }
+
+        if (authMethod === 'email' && !email) {
+          alert('Please fill in the Email field');
+          return;
+        }
+
+        if (authMethod === 'access_token' && !accessToken) {
+          alert('Please fill in the Access Token field');
           return;
         }
 
@@ -215,9 +249,8 @@
         createButton.textContent = 'Creating...';
 
         try {
-          const response = await initRampSession({
+          const sessionConfig = {
             apikey: apiKey,
-            email,
             destination,
             quote_currency: quoteCurrency,
             base_currency: baseCurrency,
@@ -226,9 +259,13 @@
             metadata: {
               created_from: 'ramp-ts-example',
             },
-          });
-
-          console.log('Session created:', response);
+          };
+          if (authMethod === 'email') {
+            sessionConfig.email = email;
+          } else {
+            sessionConfig.access_token = accessToken;
+          }
+          const response = await initRampSession(sessionConfig);
 
           if (response.success && response.data.session_token) {
             loadRampWithToken(response.data.session_token);
@@ -280,6 +317,10 @@
       };
 
       document.getElementById('createSession').addEventListener('click', createSessionToken);
+      
+      document.getElementById('authMethod').addEventListener('change', toggleAuthMethod);
+      
+      toggleAuthMethod();
 
       document.getElementById('closeRamp').addEventListener('click', () => {
         if (currentRamp) {
