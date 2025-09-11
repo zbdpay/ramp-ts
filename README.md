@@ -53,9 +53,20 @@ First, create a session token using the ZBD API:
 ```typescript
 import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
 
+// Using email authentication
 const response = await initRampSession({
   apikey: 'your-zbd-api-key',
   email: 'user@example.com',
+  destination: 'lightning-address-or-username',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+  webhook_url: 'https://your-webhook-url.com',
+});
+
+// Or using access token authentication
+const response = await initRampSession({
+  apikey: 'your-zbd-api-key',
+  access_token: 'your-access-token',
   destination: 'lightning-address-or-username',
   quote_currency: QuoteCurrencyEnum.USD,
   base_currency: BaseCurrencyEnum.BTC,
@@ -90,16 +101,18 @@ Creates a new session token for the ZBD Ramp widget.
 #### Parameters
 
 ```typescript
-interface InitRampSessionConfig {
+type InitRampSessionConfig = {
   apikey: string;                            // Required: Your ZBD API key
-  email: string;                             // Required: User's email address
   destination: string;                       // Required: Lightning address or username
   quote_currency: QuoteCurrencyEnum;         // Required: Quote currency (USD)
   base_currency: BaseCurrencyEnum;           // Required: Base currency (BTC)
   webhook_url?: string;                      // Optional: Webhook URL for notifications
   reference_id?: string;                     // Optional: Your reference ID
   metadata?: Record<string, any>;            // Optional: Additional metadata
-}
+} & (
+  | { email: string }                        // Email authentication
+  | { access_token: string }                 // Access token authentication
+);
 ```
 
 #### Returns
@@ -122,6 +135,7 @@ interface InitRampSessionResponse {
 ```typescript
 import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
 
+// Using email authentication
 try {
   const response = await initRampSession({
     apikey: 'your-zbd-api-key',
@@ -142,6 +156,89 @@ try {
   }
 } catch (error) {
   console.error('Session creation error:', error);
+}
+
+// Using access token authentication
+try {
+  const response = await initRampSession({
+    apikey: 'your-zbd-api-key',
+    access_token: 'your-access-token',
+    destination: 'lightning-address',
+    quote_currency: QuoteCurrencyEnum.USD,
+    base_currency: BaseCurrencyEnum.BTC,
+    webhook_url: 'https://your-webhook.com',
+    reference_id: 'order-123',
+    metadata: { userId: '456', plan: 'premium' },
+  });
+
+  if (response.success) {
+    const sessionToken = response.data.session_token;
+    // Use sessionToken with createRamp
+  } else {
+    console.error('Failed to create session:', response.error);
+  }
+} catch (error) {
+  console.error('Session creation error:', error);
+}
+```
+
+### refreshAccessToken(config)
+
+Refreshes an expired access token using a refresh token.
+
+**Token Lifecycle:**
+- Access tokens expire after **30 days**
+- Refresh tokens expire after **90 days**
+- Both tokens are received via webhook after user completes OTP login with email
+
+#### Parameters
+
+```typescript
+interface RefreshAccessTokenConfig {
+  apikey: string;                            // Required: Your ZBD API key
+  access_token_id: string;                   // Required: ID of the access token to refresh
+  refresh_token: string;                     // Required: Refresh token
+}
+```
+
+#### Returns
+
+```typescript
+interface RefreshAccessTokenResponse {
+  data: {
+    access_token_id: string;                 // Access token ID
+    access_token: string;                    // New access token
+    refresh_token: string;                   // New refresh token
+    access_token_expires_at: string;         // Access token expiration time
+    refresh_token_expires_at: string;        // Refresh token expiration time
+  };
+  error: string | null;                      // Error message if failed
+  success: boolean;                          // Success status
+  message: string;                           // Response message
+}
+```
+
+#### Example
+
+```typescript
+import { refreshAccessToken } from '@zbdpay/ramp-ts';
+
+try {
+  const response = await refreshAccessToken({
+    apikey: 'your-zbd-api-key',
+    access_token_id: '7b585ffa-9473-43ca-ba1d-56e9e7e2263b',
+    refresh_token: 'your-refresh-token',
+  });
+
+  if (response.success) {
+    const newAccessToken = response.data.access_token;
+    const newRefreshToken = response.data.refresh_token;
+    // Store the new tokens securely
+  } else {
+    console.error('Failed to refresh token:', response.error);
+  }
+} catch (error) {
+  console.error('Token refresh error:', error);
 }
 ```
 
