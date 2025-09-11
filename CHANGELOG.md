@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.6] - 2025-09-11
+### Added
+- Access token authentication support for `initRampSession`
+- `refreshAccessToken` method for token refresh functionality
+- Authentication method selector in interactive example (js.html)
+
+### Changed
+- `initRampSession` now accepts either `email` or `access_token` as authentication
+- Updated TypeScript types to use union type for authentication parameters
+- Enhanced error handling with reusable `handleFailedResponse` utility
+- add camera permission to iframe params
+
 ## [1.1.5] - 2025-09-05
 ### Chore
 - add error response body to error on session init
