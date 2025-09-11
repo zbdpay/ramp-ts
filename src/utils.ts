@@ -25,7 +25,7 @@ export const createIframe = ({
   iframe.style.minHeight = '600px';
   iframe.style.border = 'none';
   iframe.style.borderRadius = '8px';
-  iframe.allow = 'payment';
+  iframe.allow = 'payment; camera';
   iframe.setAttribute('allowtransparency', 'true');
 
   return iframe;

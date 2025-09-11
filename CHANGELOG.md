@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `initRampSession` now accepts either `email` or `access_token` as authentication
 - Updated TypeScript types to use union type for authentication parameters
 - Enhanced error handling with reusable `handleFailedResponse` utility
+- add camera permission to iframe params
 
 ## [1.1.5] - 2025-09-05
 ### Chore
