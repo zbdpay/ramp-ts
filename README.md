@@ -66,7 +66,7 @@ const response = await initRampSession({
 // Or using access token authentication
 const response = await initRampSession({
   apikey: 'your-zbd-api-key',
-  access_token: 'your-access-token',
+  access_token: 'user-access-token',
   destination: 'lightning-address-or-username',
   quote_currency: QuoteCurrencyEnum.USD,
   base_currency: BaseCurrencyEnum.BTC,
@@ -162,7 +162,7 @@ try {
 try {
   const response = await initRampSession({
     apikey: 'your-zbd-api-key',
-    access_token: 'your-access-token',
+    access_token: 'user-access-token',
     destination: 'lightning-address',
     quote_currency: QuoteCurrencyEnum.USD,
     base_currency: BaseCurrencyEnum.BTC,
@@ -227,7 +227,7 @@ try {
   const response = await refreshAccessToken({
     apikey: 'your-zbd-api-key',
     access_token_id: '7b585ffa-9473-43ca-ba1d-56e9e7e2263b',
-    refresh_token: 'your-refresh-token',
+    refresh_token: 'user-refresh-token',
   });
 
   if (response.success) {
