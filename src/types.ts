@@ -64,9 +64,8 @@ export interface RampInstance {
   destroy: () => void;
 }
 
-export interface InitRampSessionConfig {
+export type InitRampSessionConfig = {
   apikey: string;
-  email: string;
   destination: string;
   quote_currency: QuoteCurrencyEnum;
   base_currency: BaseCurrencyEnum;
@@ -74,7 +73,7 @@ export interface InitRampSessionConfig {
   reference_id?: string;
   metadata?: Record<string, any>;
   environment?: EnvironmentEnum;
-}
+} & ({ email: string } | { access_token: string });
 
 export interface InitRampSessionData {
   session_token: string;
@@ -84,6 +83,28 @@ export interface InitRampSessionData {
 
 export interface InitRampSessionResponse {
   data: InitRampSessionData;
+  error: string | null;
+  success: boolean;
+  message: string;
+}
+
+export interface RefreshAccessTokenConfig {
+  apikey: string;
+  access_token_id: string;
+  refresh_token: string;
+  environment?: EnvironmentEnum;
+}
+
+export interface RefreshAccessTokenData {
+  access_token_id: string;
+  access_token: string;
+  refresh_token: string;
+  access_token_expires_at: string;
+  refresh_token_expires_at: string;
+}
+
+export interface RefreshAccessTokenResponse {
+  data: RefreshAccessTokenData;
   error: string | null;
   success: boolean;
   message: string;

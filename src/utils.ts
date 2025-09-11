@@ -65,3 +65,27 @@ export const buildWidgetUrl = ({
 
   return url.toString();
 };
+
+export const handleFailedResponse = async <T>({
+  response,
+  operation,
+}: {
+  response: Response;
+  operation: string;
+}): Promise<T> => {
+  let errorMessage = `${response.status} ${response.statusText}`;
+  try {
+    const textBody = await response.text();
+    if (textBody) {
+      try {
+        const errorBody = JSON.parse(textBody);
+        errorMessage += ` ${JSON.stringify(errorBody)}`;
+      } catch {
+        errorMessage += ` ${textBody}`;
+      }
+    }
+  } catch {
+    // If reading response body fails, keep the basic error message
+  }
+  throw new Error(`Failed to ${operation}: ${errorMessage}`);
+};
