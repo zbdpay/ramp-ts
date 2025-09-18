@@ -81,13 +81,6 @@ export interface InitRampSessionData {
   widget_url: string;
 }
 
-export interface InitRampSessionResponse {
-  data: InitRampSessionData;
-  error: string | null;
-  success: boolean;
-  message: string;
-}
-
 export interface RefreshAccessTokenConfig {
   apikey: string;
   access_token_id: string;
@@ -103,9 +96,12 @@ export interface RefreshAccessTokenData {
   refresh_token_expires_at: string;
 }
 
-export interface RefreshAccessTokenResponse {
-  data: RefreshAccessTokenData;
-  error: string | null;
+export interface PlatformResponse<T> {
+  data: T | null;
+  error: RampError | null;
   success: boolean;
   message: string;
 }
+
+export type InitRampSessionResponse = PlatformResponse<InitRampSessionData>;
+export type RefreshAccessTokenResponse = PlatformResponse<RefreshAccessTokenData>;

@@ -74,11 +74,16 @@ export const handleFailedResponse = async <T>({
   operation: string;
 }): Promise<T> => {
   let errorMessage = `${response.status} ${response.statusText}`;
+  let errorBody: any = null;
+
   try {
     const textBody = await response.text();
     if (textBody) {
       try {
-        const errorBody = JSON.parse(textBody);
+        errorBody = JSON.parse(textBody);
+        if (errorBody && typeof errorBody === 'object') {
+          return errorBody as T;
+        }
         errorMessage += ` ${JSON.stringify(errorBody)}`;
       } catch {
         errorMessage += ` ${textBody}`;
@@ -87,5 +92,11 @@ export const handleFailedResponse = async <T>({
   } catch {
     // If reading response body fails, keep the basic error message
   }
-  throw new Error(`Failed to ${operation}: ${errorMessage}`);
+
+  return {
+    success: false,
+    message: `Failed to ${operation}:`,
+    data: null,
+    error: errorMessage,
+  } as T;
 };

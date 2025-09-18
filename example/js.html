@@ -270,7 +270,7 @@
           if (response.success && response.data.session_token) {
             loadRampWithToken(response.data.session_token);
           } else {
-            throw new Error(response.error || 'No session token found in API response');
+            throw new Error(response.error?.message || 'No session token found in API response');
           }
         } catch (error) {
           console.error('Error creating session:', error);
