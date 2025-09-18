@@ -123,8 +123,8 @@ interface InitRampSessionResponse {
     session_token: string;                   // Session token for widget
     expires_at: string;                      // Token expiration time
     widget_url: string;                      // Direct widget URL
-  };
-  error: string | null;                      // Error message if failed
+  } | null;                                  // Null if request failed
+  error: RampError | null;                   // Structured error object if failed
   success: boolean;                          // Success status
   message: string;                           // Response message
 }
@@ -211,8 +211,8 @@ interface RefreshAccessTokenResponse {
     refresh_token: string;                   // New refresh token
     access_token_expires_at: string;         // Access token expiration time
     refresh_token_expires_at: string;        // Refresh token expiration time
-  };
-  error: string | null;                      // Error message if failed
+  } | null;                                  // Null if request failed
+  error: RampError | null;                   // Structured error object if failed
   success: boolean;                          // Success status
   message: string;                           // Response message
 }
@@ -376,6 +376,10 @@ import type {
   InitRampSessionConfig,
   InitRampSessionData,
   InitRampSessionResponse,
+  RefreshAccessTokenConfig,
+  RefreshAccessTokenData,
+  RefreshAccessTokenResponse,
+  PlatformResponse,
   QuoteCurrencyEnum,
   BaseCurrencyEnum,
 } from '@zbdpay/ramp-ts';
