@@ -152,7 +152,7 @@ try {
     const sessionToken = response.data.session_token;
     // Use sessionToken with createRamp
   } else {
-    console.error('Failed to create session:', response.error);
+    console.error('Failed to create session:', response.error?.message);
   }
 } catch (error) {
   console.error('Session creation error:', error);
@@ -175,7 +175,7 @@ try {
     const sessionToken = response.data.session_token;
     // Use sessionToken with createRamp
   } else {
-    console.error('Failed to create session:', response.error);
+    console.error('Failed to create session:', response.error?.message);
   }
 } catch (error) {
   console.error('Session creation error:', error);

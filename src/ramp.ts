@@ -74,7 +74,7 @@ export class ZBDRamp implements RampInstance {
         break;
 
       case WidgetPostMessageEnum.StepChange:
-        this.options.onStepChange?.(payload?.step);
+        this.options.onStepChange?.(payload);
         break;
 
       case WidgetPostMessageEnum.Ready:

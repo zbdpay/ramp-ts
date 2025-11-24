@@ -27,10 +27,15 @@ export interface RampConfig {
   secret?: string;
 }
 
+export interface StepChangePayload {
+  previousStep: string | null;
+  currentStep: string;
+}
+
 export interface RampCallbacks {
   onSuccess?: (data: any) => void;
   onError?: (error: RampError) => void;
-  onStepChange?: (step: string) => void;
+  onStepChange?: (payload: StepChangePayload) => void;
   onLog?: (log: RampLog) => void;
   onReady?: () => void;
 }
